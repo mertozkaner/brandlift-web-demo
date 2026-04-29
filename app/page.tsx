@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from 'react'
 import type { FormEvent } from 'react'
 
-const MAP_ADDRESS = 'ADRESİ BURAYA YAZ'
+const MAP_ADDRESS =
+  'Group DP, Eski Büyükdere Cad. Maslak İş Merkezi No: 37 Kat: 3 PK: 34398 Sarıyer İstanbul Türkiye'
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
@@ -54,9 +55,7 @@ select {
   background: var(--black);
 }
 
-/* ─────────────────────────────────────────────
-   FIXED NAV
-───────────────────────────────────────────── */
+/* FIXED NAV */
 .site-nav {
   position: fixed;
   top: 0;
@@ -126,9 +125,7 @@ select {
   color: rgba(255,255,255,.95);
 }
 
-/* ─────────────────────────────────────────────
-   HERO
-───────────────────────────────────────────── */
+/* HERO */
 .shell {
   width: 100vw;
   min-height: 100vh;
@@ -451,9 +448,7 @@ select {
   transform: translateY(-1px);
 }
 
-/* ─────────────────────────────────────────────
-   ABSTRACT SECTIONS
-───────────────────────────────────────────── */
+/* ABSTRACT SECTIONS */
 .abstract-section {
   position: relative;
   min-height: 100vh;
@@ -603,21 +598,6 @@ select {
     0 0 120px rgba(95,150,255,.14);
 }
 
-.services .section-liquid {
-  transform: translate(-44%, -48%);
-  opacity: .38;
-}
-
-.about .section-liquid {
-  transform: translate(-56%, -48%);
-  opacity: .32;
-}
-
-.contact .section-liquid {
-  transform: translate(-50%, -45%);
-  opacity: .36;
-}
-
 .section-soft-mask {
   position: absolute;
   inset: 0;
@@ -651,9 +631,7 @@ select {
   width: 100%;
 }
 
-/* ─────────────────────────────────────────────
-   SERVICES
-───────────────────────────────────────────── */
+/* SERVICES */
 .svc-head {
   display: grid;
   grid-template-columns: 180px 1fr;
@@ -773,9 +751,7 @@ select {
   max-width: 390px;
 }
 
-/* ─────────────────────────────────────────────
-   ABOUT
-───────────────────────────────────────────── */
+/* ABOUT */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -910,9 +886,7 @@ select {
   color: rgba(255,255,255,.88);
 }
 
-/* ─────────────────────────────────────────────
-   CONTACT SECTION
-───────────────────────────────────────────── */
+/* CONTACT SECTION */
 .contact-grid {
   display: grid;
   grid-template-columns: .95fr 1.05fr;
@@ -1001,76 +975,194 @@ select {
   transform: translateY(-2px);
 }
 
+/* CUSTOM MAP */
 .contact-map-card {
   position: relative;
-  min-height: 470px;
-  border-radius: 24px;
+  min-height: clamp(420px, 52vh, 560px);
+  border-radius: 28px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.12);
   background:
-    radial-gradient(ellipse at 16% 10%, rgba(232,93,36,.18), transparent 44%),
-    radial-gradient(ellipse at 90% 90%, rgba(92,150,255,.20), transparent 46%),
-    rgba(255,255,255,.045);
+    radial-gradient(ellipse at 18% 18%, rgba(255,255,255,.08) 0%, transparent 34%),
+    radial-gradient(ellipse at 78% 70%, rgba(92,150,255,.18) 0%, transparent 48%),
+    rgba(7,7,15,.72);
   box-shadow:
-    0 44px 90px rgba(0,0,0,.46),
-    inset 0 1px 0 rgba(255,255,255,.08);
+    0 34px 90px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,255,255,.06);
 }
 
-.contact-map-card::before {
-  content: '';
+.map-visual {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(118,138,255,.16) 0%, transparent 54%),
+    linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,0));
+}
+
+.map-svg {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  opacity: .92;
+}
+
+.map-road {
+  fill: none;
+  stroke: rgba(255,255,255,.13);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.map-road-main {
+  stroke: url(#roadGlow);
+  stroke-width: 15;
+  opacity: .88;
+}
+
+.map-road.thin {
+  stroke-width: 4;
+  opacity: .56;
+}
+
+.map-node {
+  fill: rgba(255,255,255,.22);
+  stroke: rgba(255,255,255,.22);
+  stroke-width: 8;
+}
+
+.map-pin circle:first-child {
+  fill: rgba(232,93,36,.20);
+  stroke: rgba(232,93,36,.72);
+  stroke-width: 2;
+}
+
+.map-pin circle:last-child {
+  fill: #E85D24;
+  stroke: rgba(255,255,255,.76);
+  stroke-width: 2;
+}
+
+.map-label {
+  font-family: var(--font-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  fill: rgba(255,255,255,.50);
+}
+
+.map-label.main {
+  font-size: 17px;
+  fill: rgba(255,255,255,.82);
+  font-weight: 500;
+}
+
+.map-label.sub {
+  font-size: 8px;
+  fill: rgba(255,255,255,.38);
+}
+
+.map-label.road {
+  font-size: 10px;
+  fill: rgba(255,255,255,.28);
+}
+
+.map-label.road.muted {
+  fill: rgba(255,255,255,.18);
+}
+
+.map-grid {
+  position: absolute;
+  inset: 0;
+  opacity: .10;
+  background-image:
+    linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 0%, transparent 72%);
+}
+
+.map-glow {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(5,5,12,.08), rgba(5,5,12,.40)),
-    radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(7,7,15,.38) 88%);
+    radial-gradient(ellipse at 50% 55%, transparent 0%, rgba(5,5,12,.12) 44%, rgba(5,5,12,.76) 100%),
+    linear-gradient(180deg, rgba(5,5,12,.22), rgba(5,5,12,.70));
 }
 
-.contact-map {
+.map-topline {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  filter: grayscale(1) invert(.92) contrast(.92) brightness(.72);
-  opacity: .64;
+  left: 28px;
+  right: 28px;
+  top: 24px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
 }
 
-.contact-map-info {
+.map-topline span,
+.map-topline a {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.map-topline span {
+  color: var(--orange);
+}
+
+.map-topline a {
+  color: rgba(255,255,255,.58);
+  text-decoration: none;
+  transition: color .22s ease;
+}
+
+.map-topline a:hover {
+  color: rgba(255,255,255,.92);
+}
+
+.map-address-card {
   position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
-  z-index: 4;
-  padding: 22px;
+  left: 28px;
+  right: 28px;
+  bottom: 28px;
+  z-index: 3;
+  padding: 24px 26px;
   border-radius: 18px;
-  background: rgba(5,5,12,.58);
+  background: rgba(5,5,12,.72);
   border: 1px solid rgba(255,255,255,.10);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.06);
 }
 
-.contact-map-label {
+.map-address-card span {
   display: block;
   font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--orange);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.contact-map-address {
-  font-size: 14px;
-  line-height: 1.45;
-  color: rgba(255,255,255,.78);
-  letter-spacing: -.01em;
+.map-address-card p {
+  font-family: var(--font-main);
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.55;
+  letter-spacing: -.018em;
+  color: rgba(255,255,255,.76);
 }
 
-/* ─────────────────────────────────────────────
-   MODALS
-───────────────────────────────────────────── */
+/* MODALS */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -1452,9 +1544,7 @@ select {
   color: rgba(255,255,255,.78);
 }
 
-/* ─────────────────────────────────────────────
-   FIXED CONTROLS
-───────────────────────────────────────────── */
+/* FIXED CONTROLS */
 .showreel-btn {
   position: relative;
   width: 96px;
@@ -1551,9 +1641,7 @@ select {
   color: #fff;
 }
 
-/* ─────────────────────────────────────────────
-   ANIMATION
-───────────────────────────────────────────── */
+/* ANIMATION */
 @keyframes floatOrange {
   0%, 100% { transform: translate(-48%, -47%) scale(1); opacity: .95; }
   35% { transform: translate(-44%, -52%) scale(1.08); opacity: 1; }
@@ -1677,9 +1765,7 @@ select {
   to { transform: rotate(360deg); }
 }
 
-/* ─────────────────────────────────────────────
-   RESPONSIVE
-───────────────────────────────────────────── */
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .site-nav {
     padding: 22px 22px 0;
@@ -1742,10 +1828,6 @@ select {
   .about-service:nth-child(1),
   .about-service:nth-child(2) {
     border-bottom: 1px solid rgba(255,255,255,.06);
-  }
-
-  .contact-map-card {
-    min-height: 380px;
   }
 }
 
@@ -1838,6 +1920,24 @@ select {
     width: 38px;
     height: 38px;
   }
+
+  .contact-map-card {
+    min-height: 420px;
+    border-radius: 22px;
+  }
+
+  .map-topline {
+    left: 22px;
+    right: 22px;
+    top: 20px;
+  }
+
+  .map-address-card {
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    padding: 20px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -1890,15 +1990,20 @@ select {
   }
 
   .contact-map-card {
-    min-height: 340px;
+    min-height: 400px;
     border-radius: 18px;
   }
 
-  .contact-map-info {
+  .map-address-card {
     left: 16px;
     right: 16px;
     bottom: 16px;
     padding: 16px;
+  }
+
+  .map-topline {
+    left: 16px;
+    right: 16px;
   }
 }
 
@@ -2285,7 +2390,7 @@ function AboutSection() {
 }
 
 function ContactSection({ onStartProject }: { onStartProject: () => void }) {
-  const encodedAddress = encodeURIComponent(MAP_ADDRESS)
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAP_ADDRESS)}`
 
   return (
     <section id="contact" className="abstract-section contact">
@@ -2312,7 +2417,7 @@ function ContactSection({ onStartProject }: { onStartProject: () => void }) {
 
               <a
                 className="contact-secondary"
-                href={`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`}
+                href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -2322,17 +2427,70 @@ function ContactSection({ onStartProject }: { onStartProject: () => void }) {
           </div>
 
           <div className="contact-map-card">
-            <iframe
-              className="contact-map"
-              title="BrandLift location map"
-              src={`https://www.google.com/maps?q=${encodedAddress}&output=embed`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            <div className="map-visual" aria-hidden="true">
+              <svg className="map-svg" viewBox="0 0 900 560" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="roadGlow" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="rgba(255,255,255,.14)" />
+                    <stop offset="55%" stopColor="rgba(232,93,36,.42)" />
+                    <stop offset="100%" stopColor="rgba(92,150,255,.28)" />
+                  </linearGradient>
 
-            <div className="contact-map-info">
-              <span className="contact-map-label">Location</span>
-              <p className="contact-map-address">{MAP_ADDRESS}</p>
+                  <filter id="softGlow">
+                    <feGaussianBlur stdDeviation="5" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                <path className="map-road map-road-main" d="M-40 340 C120 310 210 318 330 292 C470 260 575 250 940 218" />
+                <path className="map-road map-road-main" d="M-40 420 C150 388 275 372 410 350 C555 326 690 318 940 286" />
+
+                <path className="map-road" d="M170 -20 C200 90 216 170 246 265 C274 354 308 438 350 600" />
+                <path className="map-road" d="M520 -30 C492 92 488 176 520 272 C548 356 610 428 680 600" />
+                <path className="map-road" d="M740 -30 C706 78 708 184 760 292 C802 380 844 468 872 600" />
+
+                <path className="map-road thin" d="M42 128 C178 138 306 128 430 104 C540 82 638 78 860 96" />
+                <path className="map-road thin" d="M68 220 C210 214 354 208 478 178 C596 150 710 158 890 172" />
+                <path className="map-road thin" d="M110 512 C236 468 342 440 468 430 C596 418 704 432 884 402" />
+
+                <circle className="map-node" cx="246" cy="265" r="6" />
+                <circle className="map-node" cx="520" cy="272" r="6" />
+                <circle className="map-node" cx="760" cy="292" r="6" />
+                <circle className="map-node" cx="410" cy="350" r="5" />
+                <circle className="map-node" cx="680" cy="600" r="5" />
+
+                <g className="map-pin" filter="url(#softGlow)">
+                  <circle cx="525" cy="314" r="42" />
+                  <circle cx="525" cy="314" r="16" />
+                </g>
+
+                <text className="map-label main" x="578" y="306">GROUP DP</text>
+                <text className="map-label sub" x="578" y="330">MASLAK / ISTANBUL</text>
+
+                <text className="map-label road" x="452" y="395" transform="rotate(-8 452 395)">ESKI BUYUKDERE CAD.</text>
+                <text className="map-label road muted" x="630" y="188" transform="rotate(66 630 188)">BUYUKDERE CAD.</text>
+              </svg>
+
+              <div className="map-grid" />
+              <div className="map-glow" />
+            </div>
+
+            <div className="map-topline">
+              <span>Location</span>
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+                Open in Maps ↗
+              </a>
+            </div>
+
+            <div className="map-address-card">
+              <span>Office</span>
+              <p>
+                Eski Büyükdere Cad. Maslak İş Merkezi No: 37<br />
+                Kat: 3 PK: 34398 Sarıyer / İstanbul
+              </p>
             </div>
           </div>
         </div>
