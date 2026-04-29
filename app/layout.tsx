@@ -12,13 +12,53 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: 'BrandLift',
-  description: 'BrandLift by Group DP',
-  icons: {
-    icon: '/favicon.ico',
+export const metadata: Metadata = {
+  metadataBase: new URL("https://brandlift-web-demo.vercel.app"),
+
+  title: {
+    default: "BrandLift",
+    template: "%s | BrandLift",
   },
-}
+
+  description: "BrandLift by Group DP",
+
+  applicationName: "BrandLift",
+
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        sizes: "any",
+      },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+
+  openGraph: {
+    title: "BrandLift",
+    description: "We don’t follow culture. We move it.",
+    url: "https://brandlift-web-demo.vercel.app",
+    siteName: "BrandLift",
+    type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "/brandlift-og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "BrandLift by Group DP",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "BrandLift",
+    description: "We don’t follow culture. We move it.",
+    images: ["/brandlift-og.jpg"],
+  },
+};
 
 export default function RootLayout({
   children,
