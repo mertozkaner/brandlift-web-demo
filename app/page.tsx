@@ -37,9 +37,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─────────────────────────────────────────────
-   OUTER
-───────────────────────────────────────────── */
 .shell {
   width: 100vw;
   height: 100vh;
@@ -58,7 +55,6 @@ body {
   background: var(--stage);
 }
 
-/* Fine grain, no grid */
 .stage::after {
   content: '';
   position: absolute;
@@ -71,9 +67,6 @@ body {
   mix-blend-mode: overlay;
 }
 
-/* ─────────────────────────────────────────────
-   ABSTRACT REEL FIELD
-───────────────────────────────────────────── */
 .reel-field {
   position: absolute;
   inset: 0;
@@ -176,9 +169,6 @@ body {
   mix-blend-mode: screen;
 }
 
-/* ─────────────────────────────────────────────
-   ABSTRACT GLASS / REFRACTION LAYERS
-───────────────────────────────────────────── */
 .rf-glass {
   position: absolute;
   inset: -18%;
@@ -657,6 +647,287 @@ body {
 }
 
 /* ─────────────────────────────────────────────
+   CONTACT MODAL
+───────────────────────────────────────────── */
+.cm-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(4, 4, 10, .72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn .28s ease both;
+}
+
+.cm-panel {
+  position: relative;
+  width: min(780px, 96vw);
+  max-height: 92vh;
+  overflow-y: auto;
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(232,93,36,.14) 0%, transparent 34%),
+    radial-gradient(ellipse at 86% 18%, rgba(92,150,255,.16) 0%, transparent 38%),
+    rgba(14, 16, 28, .88);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 44px 44px 36px;
+  box-shadow:
+    0 0 0 1px rgba(232,93,36,.06),
+    0 48px 96px rgba(0,0,0,.72),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  animation: modalIn .38s cubic-bezier(.16,1,.3,1) both;
+  scrollbar-width: none;
+}
+
+.cm-panel::-webkit-scrollbar {
+  display: none;
+}
+
+.cm-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 18px;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: .034;
+  mix-blend-mode: overlay;
+}
+
+.cm-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  color: rgba(255,255,255,.42);
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.cm-close:hover {
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.82);
+}
+
+.cm-header,
+.cm-form,
+.cm-success {
+  position: relative;
+  z-index: 1;
+}
+
+.cm-header {
+  margin-bottom: 32px;
+}
+
+.cm-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+
+.cm-title {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: clamp(30px, 4vw, 48px);
+  letter-spacing: -.055em;
+  line-height: .96;
+  color: #fff;
+}
+
+.cm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.cm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.cm-field-full {
+  margin-bottom: 14px;
+}
+
+.cm-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.38);
+}
+
+.cm-optional {
+  color: rgba(255,255,255,.20);
+}
+
+.cm-input,
+.cm-select,
+.cm-textarea {
+  width: 100%;
+  outline: none;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  color: rgba(255,255,255,.82);
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.cm-input::placeholder,
+.cm-textarea::placeholder {
+  color: rgba(255,255,255,.22);
+}
+
+.cm-input:focus,
+.cm-select:focus,
+.cm-textarea:focus {
+  border-color: rgba(232,93,36,.50);
+  background: rgba(255,255,255,.075);
+}
+
+.cm-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6' fill='none' stroke='rgba(255,255,255,.32)' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 10px 6px;
+}
+
+.cm-select option {
+  background: #0E1020;
+  color: rgba(255,255,255,.82);
+}
+
+.cm-textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.cm-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.cm-footnote {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.24);
+}
+
+.cm-submit {
+  background: var(--orange);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 26px;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .02em;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0 4px 20px rgba(232,93,36,.28);
+}
+
+.cm-submit:hover {
+  background: #ff7f45;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(232,93,36,.40);
+}
+
+.cm-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 52px 24px 40px;
+  gap: 16px;
+  animation: fadeUp .5s cubic-bezier(.16,1,.3,1) both;
+}
+
+.cm-success-ring {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 8px;
+}
+
+.cm-success-ring svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cm-success-title {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: clamp(28px, 3.4vw, 42px);
+  letter-spacing: -.05em;
+  color: #fff;
+}
+
+.cm-success-sub {
+  font-family: var(--font-main);
+  font-size: 14px;
+  color: rgba(255,255,255,.46);
+  line-height: 1.5;
+}
+
+.cm-success-close {
+  margin-top: 12px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 12px;
+  color: rgba(255,255,255,.50);
+  cursor: pointer;
+  letter-spacing: .02em;
+  transition: all 200ms ease;
+}
+
+.cm-success-close:hover {
+  border-color: rgba(255,255,255,.26);
+  color: rgba(255,255,255,.78);
+}
+
+/* ─────────────────────────────────────────────
    ANIMATION
 ───────────────────────────────────────────── */
 @keyframes floatOrange {
@@ -868,6 +1139,23 @@ body {
     width: 30px;
     height: 30px;
   }
+
+  .cm-panel {
+    padding: 32px 22px 28px;
+  }
+
+  .cm-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cm-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cm-submit {
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -977,8 +1265,148 @@ function ReelModal({ onClose }: { onClose: () => void }) {
   )
 }
 
+function ContactModal({ onClose }: { onClose: () => void }) {
+  const [submitted, setSubmitted] = useState(false)
+
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [onClose])
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setSubmitted(true)
+  }
+
+  return (
+    <div
+      className="cm-scrim"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Start a project"
+    >
+      <div className="cm-panel" onClick={(e) => e.stopPropagation()}>
+        <div className="cm-grain" aria-hidden="true" />
+
+        <button
+          type="button"
+          className="cm-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
+        {!submitted ? (
+          <>
+            <div className="cm-header">
+              <span className="cm-eyebrow">New project</span>
+              <h2 className="cm-title">Let’s build something.</h2>
+            </div>
+
+            <form className="cm-form" onSubmit={handleSubmit}>
+              <div className="cm-row">
+                <div className="cm-field">
+                  <label className="cm-label" htmlFor="cm-name">Name</label>
+                  <input className="cm-input" id="cm-name" name="name" type="text" placeholder="Your name" required autoComplete="name" />
+                </div>
+
+                <div className="cm-field">
+                  <label className="cm-label" htmlFor="cm-company">Company / Brand</label>
+                  <input className="cm-input" id="cm-company" name="company" type="text" placeholder="Company or brand" autoComplete="organization" />
+                </div>
+              </div>
+
+              <div className="cm-row">
+                <div className="cm-field">
+                  <label className="cm-label" htmlFor="cm-email">Email</label>
+                  <input className="cm-input" id="cm-email" name="email" type="email" placeholder="you@brand.com" required autoComplete="email" />
+                </div>
+
+                <div className="cm-field">
+                  <label className="cm-label" htmlFor="cm-phone">
+                    Phone <span className="cm-optional">(optional)</span>
+                  </label>
+                  <input className="cm-input" id="cm-phone" name="phone" type="tel" placeholder="+90 000 000 0000" autoComplete="tel" />
+                </div>
+              </div>
+
+              <div className="cm-row">
+                <div className="cm-field">
+                  <label className="cm-label" htmlFor="cm-type">Project type</label>
+                  <select className="cm-select" id="cm-type" name="type" defaultValue="">
+                    <option value="" disabled>Select type</option>
+                    <option>Brand Strategy</option>
+                    <option>Campaign</option>
+                    <option>Film / Motion</option>
+                    <option>Social Content</option>
+                    <option>Digital Experience</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+
+                <div className="cm-field">
+                  <label className="cm-label" htmlFor="cm-budget">Budget range</label>
+                  <select className="cm-select" id="cm-budget" name="budget" defaultValue="">
+                    <option value="" disabled>Select range</option>
+                    <option>Under $5K</option>
+                    <option>$5K – $15K</option>
+                    <option>$15K – $50K</option>
+                    <option>$50K+</option>
+                    <option>Not sure yet</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="cm-field cm-field-full">
+                <label className="cm-label" htmlFor="cm-message">Message</label>
+                <textarea
+                  className="cm-input cm-textarea"
+                  id="cm-message"
+                  name="message"
+                  placeholder="Tell us about your project, timeline, goals..."
+                  rows={4}
+                />
+              </div>
+
+              <div className="cm-footer">
+                <span className="cm-footnote">We respond within 24 hours.</span>
+                <button type="submit" className="cm-submit">
+                  Send request →
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <div className="cm-success">
+            <div className="cm-success-ring" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="23" stroke="rgba(232,93,36,.35)" strokeWidth="1" />
+                <path d="M14 24.5l7 7 13-14" stroke="#E85D24" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+
+            <h2 className="cm-success-title">Request received.</h2>
+            <p className="cm-success-sub">We’ll get back to you shortly.</p>
+
+            <button type="button" className="cm-success-close" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function BrandLiftHero() {
   const [reel, setReel] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
   const metaRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -1075,9 +1503,13 @@ export default function BrandLiftHero() {
 
             <p className="sub">Full-service creative agency</p>
 
-            <a href="#contact" className="btn-start">
+            <button
+              type="button"
+              className="btn-start"
+              onClick={() => setContactOpen(true)}
+            >
               Start a project →
-            </a>
+            </button>
           </div>
 
           <div className="service-stack" aria-label="Services">
@@ -1132,6 +1564,7 @@ export default function BrandLiftHero() {
       </main>
 
       {reel && <ReelModal onClose={() => setReel(false)} />}
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
     </>
   )
 }
