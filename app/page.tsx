@@ -23,23 +23,31 @@ const CSS = `
   --font-mono: 'DM Mono', 'Courier New', monospace;
 }
 
-html,
-body {
+html {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
+  scroll-behavior: smooth;
   background: var(--black);
-  font-family: var(--font-main);
 }
 
 body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--black);
+  font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.page {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .shell {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: #040406;
   display: flex;
   align-items: stretch;
@@ -49,7 +57,7 @@ body {
 
 .stage {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   position: relative;
   overflow: hidden;
   background: var(--stage);
@@ -299,9 +307,7 @@ body {
     #07070F 100%);
 }
 
-/* ─────────────────────────────────────────────
-   NAV
-───────────────────────────────────────────── */
+/* NAV */
 .nav {
   position: relative;
   z-index: 20;
@@ -366,9 +372,7 @@ body {
   white-space: nowrap;
 }
 
-/* ─────────────────────────────────────────────
-   CENTRED HERO TYPE
-───────────────────────────────────────────── */
+/* HERO */
 .hero-copy {
   position: absolute;
   z-index: 20;
@@ -452,9 +456,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* ─────────────────────────────────────────────
-   SERVICE STACK
-───────────────────────────────────────────── */
+/* SERVICE STACK */
 .service-stack {
   position: absolute;
   z-index: 20;
@@ -478,9 +480,7 @@ body {
   color: rgba(255,255,255,.42);
 }
 
-/* ─────────────────────────────────────────────
-   CIRCULAR SHOWREEL
-───────────────────────────────────────────── */
+/* SHOWREEL */
 .showreel-btn {
   position: absolute;
   right: 34px;
@@ -543,9 +543,7 @@ body {
   margin-left: 3px;
 }
 
-/* ─────────────────────────────────────────────
-   MODAL
-───────────────────────────────────────────── */
+/* MODAL */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -646,9 +644,7 @@ body {
   box-shadow: 0 0 18px rgba(232,93,36,.65);
 }
 
-/* ─────────────────────────────────────────────
-   CONTACT MODAL
-───────────────────────────────────────────── */
+/* CONTACT MODAL */
 .cm-scrim {
   position: fixed;
   inset: 0;
@@ -927,85 +923,238 @@ body {
   color: rgba(255,255,255,.78);
 }
 
-/* ─────────────────────────────────────────────
-   ANIMATION
-───────────────────────────────────────────── */
+/* SERVICES */
+.services {
+  position: relative;
+  min-height: 100vh;
+  background: #06060E;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(54px, 6.4vh, 76px) clamp(44px, 8vw, 120px);
+  scroll-margin-top: 0;
+}
+
+.services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 8% 40%, rgba(232,93,36,.20) 0%, transparent 52%),
+    radial-gradient(ellipse at 92% 62%, rgba(92,150,255,.18) 0%, transparent 52%),
+    radial-gradient(ellipse at 50% 90%, rgba(226,55,140,.10) 0%, transparent 48%);
+  filter: blur(48px);
+}
+
+.services::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: .032;
+  mix-blend-mode: overlay;
+}
+
+.svc-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.svc-head {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 34px;
+  align-items: start;
+  margin-bottom: clamp(42px, 6vh, 58px);
+  padding-bottom: clamp(34px, 5vh, 46px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.svc-tag {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.svc-tag-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.svc-tag-index {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .10em;
+  color: rgba(255,255,255,.18);
+  margin-top: 6px;
+}
+
+.svc-statement {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: clamp(36px, 4.4vw, 64px);
+  line-height: .94;
+  letter-spacing: -.066em;
+  color: #FFFFFF;
+}
+
+.svc-statement em {
+  font-style: normal;
+  color: rgba(255,255,255,.38);
+}
+
+.svc-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.svc-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 180px 1fr 1.05fr;
+  gap: 34px;
+  align-items: center;
+  padding: clamp(18px, 2.4vh, 26px) 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity .7s cubic-bezier(.16,1,.3,1),
+    transform .7s cubic-bezier(.16,1,.3,1);
+}
+
+.svc-row.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.svc-row:last-child {
+  border-bottom: none;
+}
+
+.svc-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+  background: var(--orange);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.svc-row:hover::before {
+  opacity: .50;
+}
+
+.svc-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .10em;
+  color: rgba(255,255,255,.20);
+}
+
+.svc-title {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: clamp(18px, 1.45vw, 23px);
+  line-height: 1.08;
+  letter-spacing: -.05em;
+  color: rgba(255,255,255,.90);
+}
+
+.svc-body {
+  font-family: var(--font-main);
+  font-size: clamp(12px, .95vw, 14px);
+  line-height: 1.52;
+  color: rgba(255,255,255,.34);
+  max-width: 390px;
+}
+
+/* FIXED CONTROLS */
+.back-top-btn {
+  position: fixed;
+  left: 28px;
+  bottom: 28px;
+  z-index: 80;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: var(--font-main);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .22s ease, background .22s ease, border-color .22s ease, color .22s ease;
+}
+
+.back-top-btn:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.28);
+  color: #fff;
+}
+
+.floating-showreel {
+  position: fixed;
+  right: 34px;
+  bottom: 28px;
+  z-index: 80;
+}
+
+/* ANIMATION */
 @keyframes floatOrange {
-  0%, 100% {
-    transform: translate(-48%, -47%) scale(1);
-    opacity: .95;
-  }
-  35% {
-    transform: translate(-44%, -52%) scale(1.08);
-    opacity: 1;
-  }
-  70% {
-    transform: translate(-54%, -43%) scale(.94);
-    opacity: .82;
-  }
+  0%, 100% { transform: translate(-48%, -47%) scale(1); opacity: .95; }
+  35% { transform: translate(-44%, -52%) scale(1.08); opacity: 1; }
+  70% { transform: translate(-54%, -43%) scale(.94); opacity: .82; }
 }
 
 @keyframes floatBlue {
-  0%, 100% {
-    transform: translate(-60%, -44%) scale(1);
-    opacity: .88;
-  }
-  45% {
-    transform: translate(-64%, -48%) scale(1.10);
-    opacity: 1;
-  }
-  74% {
-    transform: translate(-54%, -40%) scale(.92);
-    opacity: .76;
-  }
+  0%, 100% { transform: translate(-60%, -44%) scale(1); opacity: .88; }
+  45% { transform: translate(-64%, -48%) scale(1.10); opacity: 1; }
+  74% { transform: translate(-54%, -40%) scale(.92); opacity: .76; }
 }
 
 @keyframes floatPink {
-  0%, 100% {
-    transform: translate(-20%, -53%) scale(1);
-    opacity: .78;
-  }
-  50% {
-    transform: translate(-12%, -58%) scale(1.16);
-    opacity: .95;
-  }
+  0%, 100% { transform: translate(-20%, -53%) scale(1); opacity: .78; }
+  50% { transform: translate(-12%, -58%) scale(1.16); opacity: .95; }
 }
 
 @keyframes floatCream {
-  0%, 100% {
-    transform: translate(-35%, -58%) scale(1);
-    opacity: .72;
-  }
-  50% {
-    transform: translate(-30%, -62%) scale(1.18);
-    opacity: .95;
-  }
+  0%, 100% { transform: translate(-35%, -58%) scale(1); opacity: .72; }
+  50% { transform: translate(-30%, -62%) scale(1.18); opacity: .95; }
 }
 
 @keyframes glassDrift {
-  0%, 100% {
-    transform: translate3d(-1.5%, 1%, 0) scale(1.02);
-    opacity: .42;
-  }
-  45% {
-    transform: translate3d(2%, -1.5%, 0) scale(1.06);
-    opacity: .58;
-  }
-  72% {
-    transform: translate3d(0%, 2%, 0) scale(.99);
-    opacity: .50;
-  }
+  0%, 100% { transform: translate3d(-1.5%, 1%, 0) scale(1.02); opacity: .42; }
+  45% { transform: translate3d(2%, -1.5%, 0) scale(1.06); opacity: .58; }
+  72% { transform: translate3d(0%, 2%, 0) scale(.99); opacity: .50; }
 }
 
 @keyframes glassPulse {
-  0%, 100% {
-    transform: translate3d(-2%, 0, 0) scale(1);
-    opacity: .68;
-  }
-  50% {
-    transform: translate3d(3%, -2%, 0) scale(1.08);
-    opacity: .96;
-  }
+  0%, 100% { transform: translate3d(-2%, 0, 0) scale(1); opacity: .68; }
+  50% { transform: translate3d(3%, -2%, 0) scale(1.08); opacity: .96; }
 }
 
 @keyframes liquidFlow {
@@ -1028,36 +1177,18 @@ body {
 }
 
 @keyframes heroCopyIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, calc(-50% + 14px));
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
@@ -1066,14 +1197,8 @@ body {
 }
 
 @keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(.96) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  from { opacity: 0; transform: scale(.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 @keyframes spinSlow {
@@ -1081,9 +1206,31 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* ─────────────────────────────────────────────
-   RESPONSIVE
-───────────────────────────────────────────── */
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .svc-head {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .svc-tag {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding-top: 0;
+  }
+
+  .svc-row {
+    grid-template-columns: 60px 1fr;
+    gap: 20px;
+  }
+
+  .svc-body {
+    grid-column: 2;
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
   .nav {
     padding: 22px 22px 0;
@@ -1155,6 +1302,43 @@ body {
 
   .cm-submit {
     text-align: center;
+  }
+
+  .back-top-btn {
+    left: 22px;
+    bottom: 22px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .floating-showreel {
+    right: 22px;
+    bottom: 22px;
+  }
+}
+
+@media (max-width: 600px) {
+  .services {
+    padding: 72px 24px 80px;
+  }
+
+  .svc-head {
+    margin-bottom: 48px;
+    padding-bottom: 40px;
+  }
+
+  .svc-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .svc-num {
+    display: none;
+  }
+
+  .svc-body {
+    padding-top: 0;
+    grid-column: auto;
   }
 }
 
@@ -1404,10 +1588,150 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   )
 }
 
+function ServicesSection() {
+  const rowRefs = useRef<Array<HTMLDivElement | null>>([])
+
+  useEffect(() => {
+    const observers = rowRefs.current.map((el, i) => {
+      if (!el) return null
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            el.style.transitionDelay = `${i * 100}ms`
+            el.classList.add('visible')
+            observer.disconnect()
+          }
+        },
+        { threshold: 0.15 }
+      )
+
+      observer.observe(el)
+      return observer
+    })
+
+    return () => {
+      observers.forEach((observer) => observer?.disconnect())
+    }
+  }, [])
+
+  const rows = [
+    {
+      num: '01',
+      title: 'We See What Others Miss.',
+      body: 'We find the invisible truth in the space everyone is already looking at.',
+    },
+    {
+      num: '02',
+      title: 'We Build Systems, Not Campaigns.',
+      body: 'Not short-term ads, but structures designed to grow with the brand.',
+    },
+    {
+      num: '03',
+      title: 'We Shape Perception, Not Media Plans.',
+      body: 'We don’t just spend budgets. We make brands impossible to ignore.',
+    },
+    {
+      num: '04',
+      title: 'We Evolve Brands Through Data.',
+      body: 'We don’t report numbers. We turn data into real-time brand evolution.',
+    },
+  ]
+
+  return (
+    <section id="services" className="services">
+      <div className="svc-inner">
+        <div className="svc-head">
+          <div className="svc-tag">
+            <span className="svc-tag-label">Services</span>
+            <span className="svc-tag-index">BRANDLIFT · 2025</span>
+          </div>
+
+          <h2 className="svc-statement">
+            We don’t produce content.
+            <br />
+            <em>We design direction.</em>
+          </h2>
+        </div>
+
+        <div className="svc-rows">
+          {rows.map((row, i) => (
+            <div
+              key={row.num}
+              className="svc-row"
+              ref={(el) => {
+                rowRefs.current[i] = el
+              }}
+            >
+              <span className="svc-num">{row.num}</span>
+              <h3 className="svc-title">{row.title}</h3>
+              <p className="svc-body">{row.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ShowreelButton({
+  onClick,
+  floating = false,
+}: {
+  onClick: () => void
+  floating?: boolean
+}) {
+  const pathId = floating ? 'sr-path-floating' : 'sr-path'
+
+  return (
+    <button
+      className={`showreel-btn${floating ? ' floating-showreel' : ''}`}
+      onClick={onClick}
+      aria-label="Play BrandLift showreel"
+      type="button"
+    >
+      <svg viewBox="0 0 92 92" className="showreel-svg" aria-hidden="true">
+        <defs>
+          <path
+            id={pathId}
+            d="M46,46 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"
+          />
+        </defs>
+
+        <circle
+          cx="46"
+          cy="46"
+          r="44"
+          fill="none"
+          stroke="rgba(255,255,255,.18)"
+          strokeWidth="0.8"
+        />
+
+        <text
+          fill="rgba(255,255,255,.76)"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '7.5px',
+            letterSpacing: '.15em',
+          }}
+        >
+          <textPath href={`#${pathId}`} startOffset="0%">
+            PLAY SHOWREEL · PLAY SHOWREEL ·
+          </textPath>
+        </text>
+      </svg>
+
+      <span className="showreel-core" aria-hidden="true">
+        <span className="showreel-tri" />
+      </span>
+    </button>
+  )
+}
+
 export default function BrandLiftHero() {
   const [reel, setReel] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
-  const metaRef = useRef<HTMLDivElement | null>(null)
+  const metaRef = useRef<HTMLSpanElement | null>(null)
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -1443,125 +1767,101 @@ export default function BrandLiftHero() {
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      <main className="shell">
-        <section className="stage">
-          <div className="reel-field" aria-hidden="true">
-            <div className="rf-blue" />
-            <div className="rf-orange" />
-            <div className="rf-pink" />
-            <div className="rf-cream" />
-            <div className="rf-band" />
-            <div className="rf-glass" />
-            <div className="rf-liquid" />
-            <div className="rf-glass-mask" />
-            <div className="rf-grain" />
-            <div className="rf-vignette" />
-          </div>
-
-          <nav className="nav">
-            <a href="/" className="logo" aria-label="BrandLift">
-              <img
-                src="/brandlift-logo.png"
-                alt="BrandLift by Group DP"
-                className="logo-img"
-              />
-            </a>
-
-            <div className="nav-right">
-              <ul className="nav-links">
-                <li>
-                  <a
-                    href="https://www.instagram.com/brandlift.groupdp/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Works
-                  </a>
-                </li>
-                <li>
-                  <a href="#services">Services</a>
-                </li>
-                <li>
-                  <a href="#about">About</a>
-                </li>
-                <li>
-                  <a href="#contact">Contact</a>
-                </li>
-              </ul>
-
-              <span ref={metaRef} className="nav-meta" suppressHydrationWarning>
-                ISTANBUL
-              </span>
+      <div className="page">
+        <main className="shell">
+          <section className="stage">
+            <div className="reel-field" aria-hidden="true">
+              <div className="rf-blue" />
+              <div className="rf-orange" />
+              <div className="rf-pink" />
+              <div className="rf-cream" />
+              <div className="rf-band" />
+              <div className="rf-glass" />
+              <div className="rf-liquid" />
+              <div className="rf-glass-mask" />
+              <div className="rf-grain" />
+              <div className="rf-vignette" />
             </div>
-          </nav>
 
-          <div className="hero-copy">
-            <h1 className="hl">
-              <span>We don’t follow culture.</span>
-              <span>We move it.</span>
-            </h1>
-
-            <p className="sub">Full-service creative agency</p>
-
-            <button
-              type="button"
-              className="btn-start"
-              onClick={() => setContactOpen(true)}
-            >
-              Start a project →
-            </button>
-          </div>
-
-          <div className="service-stack" aria-label="Services">
-            <span className="service-item">Art Direction</span>
-            <span className="service-item">Development</span>
-            <span className="service-item">Design</span>
-            <span className="service-item service-item-muted">Strategy</span>
-            <span className="service-item service-item-muted">Production</span>
-          </div>
-
-          <button
-            className="showreel-btn"
-            onClick={() => setReel(true)}
-            aria-label="Play BrandLift showreel"
-          >
-            <svg viewBox="0 0 92 92" className="showreel-svg" aria-hidden="true">
-              <defs>
-                <path
-                  id="sr-path"
-                  d="M46,46 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"
+            <nav className="nav">
+              <a href="/" className="logo" aria-label="BrandLift">
+                <img
+                  src="/brandlift-logo.png"
+                  alt="BrandLift by Group DP"
+                  className="logo-img"
                 />
-              </defs>
+              </a>
 
-              <circle
-                cx="46"
-                cy="46"
-                r="44"
-                fill="none"
-                stroke="rgba(255,255,255,.18)"
-                strokeWidth="0.8"
-              />
+              <div className="nav-right">
+                <ul className="nav-links">
+                  <li>
+                    <a
+                      href="https://www.instagram.com/brandlift.groupdp/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Works
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#services">Services</a>
+                  </li>
+                  <li>
+                    <a href="#about">About</a>
+                  </li>
+                  <li>
+                    <a href="#contact">Contact</a>
+                  </li>
+                </ul>
 
-              <text
-                fill="rgba(255,255,255,.76)"
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '7.5px',
-                  letterSpacing: '.15em',
-                }}
+                <span ref={metaRef} className="nav-meta" suppressHydrationWarning>
+                  ISTANBUL
+                </span>
+              </div>
+            </nav>
+
+            <div className="hero-copy">
+              <h1 className="hl">
+                <span>We don’t follow culture.</span>
+                <span>We move it.</span>
+              </h1>
+
+              <p className="sub">Full-service creative agency</p>
+
+              <button
+                type="button"
+                className="btn-start"
+                onClick={() => setContactOpen(true)}
               >
-                <textPath href="#sr-path" startOffset="0%">
-                  PLAY SHOWREEL · PLAY SHOWREEL ·
-                </textPath>
-              </text>
-            </svg>
+                Start a project →
+              </button>
+            </div>
 
-            <span className="showreel-core" aria-hidden="true">
-              <span className="showreel-tri" />
-            </span>
-          </button>
-        </section>
-      </main>
+            <div className="service-stack" aria-label="Services">
+              <span className="service-item">Art Direction</span>
+              <span className="service-item">Development</span>
+              <span className="service-item">Design</span>
+              <span className="service-item service-item-muted">Strategy</span>
+              <span className="service-item service-item-muted">Production</span>
+            </div>
+
+            <ShowreelButton onClick={() => setReel(true)} />
+          </section>
+        </main>
+
+        <ServicesSection />
+      </div>
+
+      <button
+        type="button"
+        className="back-top-btn"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+      >
+        ↑
+      </button>
+
+      <ShowreelButton onClick={() => setReel(true)} floating />
 
       {reel && <ReelModal onClose={() => setReel(false)} />}
       {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
