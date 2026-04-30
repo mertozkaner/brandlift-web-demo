@@ -6,18 +6,16 @@ import type { FormEvent } from 'react'
 const MAP_ADDRESS =
   'Group DP, Eski Büyükdere Cad. Maslak İş Merkezi No: 37 Kat: 3 PK: 34398 Sarıyer İstanbul Türkiye'
 
+const INSTAGRAM_URL = 'https://www.instagram.com/brandlift.groupdp/'
+
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --black: #050507;
-  --stage: #07070F;
+  --stage: #F5F3EF;
   --blue: #4A82C8;
   --orange: #E85D24;
   --white: #FFFFFF;
@@ -25,12 +23,7 @@ const CSS = `
   --font-mono: 'DM Mono', 'Courier New', monospace;
 }
 
-html {
-  width: 100%;
-  min-height: 100%;
-  scroll-behavior: smooth;
-  background: var(--black);
-}
+html { width: 100%; min-height: 100%; scroll-behavior: smooth; background: var(--black); }
 
 body {
   width: 100%;
@@ -42,12 +35,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
+button, input, textarea, select { font: inherit; }
 
 .page {
   width: 100%;
@@ -77,11 +65,25 @@ select {
   animation: fadeDown .7s cubic-bezier(.16, 1, .3, 1) both .1s;
 }
 
-.logo-img {
+.logo-img-dark,
+.logo-img-light {
   display: block;
   width: clamp(148px, 12vw, 210px);
   height: auto;
   object-fit: contain;
+  transition: opacity .25s ease;
+}
+
+.logo-img-light {
+  display: none;
+}
+
+body.logo-light .logo-img-dark {
+  display: none;
+}
+
+body.logo-light .logo-img-light {
+  display: block;
 }
 
 .nav-right {
@@ -98,21 +100,22 @@ select {
   list-style: none;
   padding: 10px 14px;
   border-radius: 999px;
-  background: rgba(5,5,10,.20);
-  border: 1px solid rgba(255,255,255,.06);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(5,5,10,.74);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 48px rgba(0,0,0,.14);
 }
 
 .nav-links a,
 .nav-links button {
   text-decoration: none;
   font-family: var(--font-main);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 13px;
   letter-spacing: .035em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.66);
+  color: rgba(255,255,255,.70);
   transition: color .2s ease;
   background: transparent;
   border: 0;
@@ -122,14 +125,14 @@ select {
 
 .nav-links a:hover,
 .nav-links button:hover {
-  color: rgba(255,255,255,.95);
+  color: rgba(255,255,255,.98);
 }
 
 /* HERO */
 .shell {
   width: 100vw;
   min-height: 100vh;
-  background: #040406;
+  background: #f5f3ef;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -141,228 +144,35 @@ select {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  background: var(--stage);
+  background: #f5f3ef;
 }
 
-.stage::after,
-.abstract-section::after {
+.stage::before {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/hero-abstract-bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transform: scale(1.08) translate3d(0, 0, 0);
+  animation: heroImageDrift 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.stage::after {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 50;
+  z-index: 3;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 220px 220px;
-  opacity: .045;
-  mix-blend-mode: overlay;
+  background: transparent;
 }
 
 .reel-field {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.rf-orange,
-.rf-blue,
-.rf-pink,
-.rf-cream {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.rf-orange {
-  width: 110vw;
-  height: 96vh;
-  top: 50%;
-  left: 50%;
-  transform: translate(-48%, -47%);
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(255, 106, 24, .56) 0%,
-    rgba(240, 80, 14, .30) 27%,
-    rgba(216, 62, 8, .12) 52%,
-    rgba(216, 62, 8, .04) 64%,
-    transparent 78%);
-  filter: blur(92px);
-  animation: floatOrange 18s ease-in-out infinite;
-}
-
-.rf-blue {
-  width: 104vw;
-  height: 92vh;
-  top: 50%;
-  left: 50%;
-  transform: translate(-60%, -44%);
-  background: radial-gradient(ellipse at 48% 54%,
-    rgba(92, 150, 255, .84) 0%,
-    rgba(56, 90, 245, .58) 30%,
-    rgba(26, 44, 180, .28) 56%,
-    transparent 78%);
-  filter: blur(88px);
-  animation: floatBlue 23s ease-in-out infinite;
-}
-
-.rf-pink {
-  width: 70vw;
-  height: 66vh;
-  top: 50%;
-  left: 50%;
-  transform: translate(-20%, -53%);
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(226, 55, 140, .55) 0%,
-    rgba(192, 40, 108, .28) 38%,
-    transparent 76%);
-  filter: blur(82px);
-  mix-blend-mode: screen;
-  animation: floatPink 20s ease-in-out infinite;
-}
-
-.rf-cream {
-  width: 54vw;
-  height: 46vh;
-  top: 50%;
-  left: 50%;
-  transform: translate(-35%, -58%);
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(255, 231, 176, .38) 0%,
-    rgba(248, 205, 138, .16) 44%,
-    transparent 72%);
-  filter: blur(60px);
-  mix-blend-mode: screen;
-  animation: floatCream 15s ease-in-out infinite;
-}
-
-.rf-band {
-  position: absolute;
-  left: 0;
-  top: 48%;
-  width: 100%;
-  height: 44%;
-  transform: translateY(-50%);
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(255, 106, 24, .08) 16%,
-    rgba(255, 124, 48, .20) 34%,
-    rgba(235, 70, 105, .18) 48%,
-    rgba(45, 66, 220, .22) 60%,
-    rgba(22, 34, 128, .10) 78%,
-    transparent 100%
-  );
-  filter: blur(42px);
-  mix-blend-mode: screen;
-}
-
-.rf-glass {
-  position: absolute;
-  inset: -18%;
-  z-index: 5;
-  opacity: .42;
-  mix-blend-mode: screen;
-  background:
-    radial-gradient(ellipse at 20% 28%, rgba(255,255,255,.30) 0%, rgba(255,255,255,.10) 12%, transparent 30%),
-    radial-gradient(ellipse at 70% 36%, rgba(168,205,255,.46) 0%, rgba(116,166,255,.26) 28%, transparent 58%),
-    radial-gradient(ellipse at 42% 58%, rgba(210,90,255,.30) 0%, rgba(175,60,230,.16) 32%, transparent 64%),
-    radial-gradient(ellipse at 58% 50%, rgba(255,255,255,.16) 0%, transparent 44%),
-    linear-gradient(115deg,
-      rgba(255,255,255,.16) 0%,
-      rgba(226,236,255,.24) 16%,
-      rgba(178,210,255,.36) 36%,
-      rgba(112,156,255,.36) 56%,
-      rgba(196,94,255,.24) 74%,
-      rgba(255,255,255,.12) 100%);
-  filter: blur(.3px);
-  animation: glassDrift 18s ease-in-out infinite;
-}
-
-.rf-glass::after {
-  content: '';
-  position: absolute;
-  inset: -24%;
-  background:
-    radial-gradient(ellipse at 20% 34%, rgba(255,255,255,.38) 0%, transparent 24%),
-    radial-gradient(ellipse at 46% 42%, rgba(190,82,255,.30) 0%, transparent 34%),
-    radial-gradient(ellipse at 72% 50%, rgba(86,180,255,.42) 0%, transparent 38%),
-    radial-gradient(ellipse at 82% 26%, rgba(220,238,255,.32) 0%, transparent 28%);
-  filter: blur(24px);
-  opacity: .92;
-  animation: glassPulse 15s ease-in-out infinite;
-}
-
-.rf-liquid {
-  position: absolute;
-  z-index: 6;
-  width: 46vw;
-  height: 46vw;
-  min-width: 460px;
-  min-height: 460px;
-  max-width: 820px;
-  max-height: 820px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-52%, -50%);
-  border-radius: 58% 42% 54% 46% / 46% 58% 42% 54%;
-  background:
-    radial-gradient(circle at 28% 22%, rgba(255,255,255,.86) 0%, rgba(255,255,255,.30) 12%, transparent 28%),
-    radial-gradient(circle at 68% 64%, rgba(64,132,255,.86) 0%, rgba(64,132,255,.34) 30%, transparent 58%),
-    radial-gradient(circle at 38% 72%, rgba(194,78,255,.58) 0%, rgba(194,78,255,.26) 34%, transparent 64%),
-    linear-gradient(135deg,
-      rgba(240,248,255,.84) 0%,
-      rgba(168,205,255,.82) 28%,
-      rgba(80,138,255,.76) 54%,
-      rgba(170,78,255,.54) 78%,
-      rgba(255,255,255,.34) 100%);
-  filter: blur(8px);
-  opacity: .58;
-  mix-blend-mode: screen;
-  animation: liquidFlow 14s ease-in-out infinite;
-  box-shadow:
-    inset 28px 28px 90px rgba(255,255,255,.18),
-    inset -54px -48px 130px rgba(30,60,180,.26),
-    0 0 150px rgba(95,150,255,.26);
-}
-
-.rf-glass-mask {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 50%,
-    transparent 0%,
-    transparent 42%,
-    rgba(7,7,15,.22) 66%,
-    rgba(7,7,15,.72) 86%,
-    #07070F 100%);
-}
-
-.rf-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 9;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-  opacity: .065;
-  mix-blend-mode: overlay;
-  mask-image: radial-gradient(ellipse at 50% 50%, black 6%, rgba(0,0,0,.72) 42%, transparent 76%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 6%, rgba(0,0,0,.72) 42%, transparent 76%);
-}
-
-.rf-vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 50%,
-    transparent 26%,
-    rgba(7,7,15,.08) 46%,
-    rgba(7,7,15,.46) 66%,
-    rgba(7,7,15,.86) 82%,
-    #07070F 100%);
+  display: none;
 }
 
 .hero-copy {
@@ -374,19 +184,10 @@ select {
   width: min(980px, 88vw);
   text-align: center;
   pointer-events: none;
-  animation: heroCopyIn .9s cubic-bezier(.16, 1, .3, 1) both .42s;
 }
 
 .hero-copy::before {
-  content: '';
-  position: absolute;
-  inset: -130px -90px;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(7,7,15,.34) 0%,
-    rgba(7,7,15,.14) 42%,
-    transparent 70%);
+  display: none;
 }
 
 .hl {
@@ -395,8 +196,8 @@ select {
   font-size: clamp(44px, 5.15vw, 86px);
   line-height: .96;
   letter-spacing: -.066em;
-  color: #fff;
-  text-shadow: 0 2px 50px rgba(0,0,0,.36);
+  color: rgba(7,7,15,.92);
+  text-shadow: 0 2px 46px rgba(255,255,255,.32);
   margin: 0 0 24px;
   display: flex;
   flex-direction: column;
@@ -407,10 +208,18 @@ select {
 .hl span {
   display: block;
   white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.hl span:first-child {
+  animation: wordInLeft .95s cubic-bezier(.16, 1, .3, 1) both .18s;
 }
 
 .hl span:nth-child(2) {
   transform: translateX(18px);
+  color: rgba(7,7,15,.62);
+  animation: wordInRight .95s cubic-bezier(.16, 1, .3, 1) both .34s;
 }
 
 .sub {
@@ -418,34 +227,40 @@ select {
   font-size: 9px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.42);
+  color: rgba(7,7,15,.44);
   margin: 0 auto 24px;
+  opacity: 0;
+  animation: fadeUp .7s cubic-bezier(.16, 1, .3, 1) both .72s;
 }
 
 .btn-start {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(232,93,36,.92);
+  border: 1px solid rgba(232,93,36,.42);
   border-radius: 100px;
   padding: 10px 22px;
   font-family: var(--font-main);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 12px;
   letter-spacing: -.01em;
-  color: rgba(255,255,255,.68);
+  color: rgba(255,255,255,.96);
   text-decoration: none;
   cursor: pointer;
-  transition: background .22s ease, border-color .22s ease, color .22s ease, transform .22s ease;
+  transition: background .22s ease, border-color .22s ease, color .22s ease, transform .22s ease, box-shadow .22s ease;
   pointer-events: all;
+  box-shadow: 0 14px 36px rgba(232,93,36,.22);
+  opacity: 0;
+  animation: fadeUp .7s cubic-bezier(.16, 1, .3, 1) both .88s;
 }
 
 .btn-start:hover {
-  background: rgba(255,255,255,.14);
-  border-color: rgba(255,255,255,.28);
-  color: rgba(255,255,255,.92);
+  background: #ff7f45;
+  border-color: rgba(232,93,36,.68);
+  color: #fff;
   transform: translateY(-1px);
+  box-shadow: 0 18px 46px rgba(232,93,36,.30);
 }
 
 /* ABSTRACT SECTIONS */
@@ -458,6 +273,18 @@ select {
   padding: clamp(72px, 9vh, 110px) clamp(44px, 8vw, 120px);
   scroll-margin-top: 0;
   background: #05050C;
+}
+
+.abstract-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: .045;
+  mix-blend-mode: overlay;
 }
 
 .section-bg {
@@ -517,20 +344,70 @@ select {
   animation: sectionFloatD 16s ease-in-out infinite;
 }
 
-.services .section-field-a {
-  background: radial-gradient(ellipse at 50% 50%, rgba(255,106,24,.44) 0%, rgba(232,93,36,.24) 34%, rgba(232,93,36,.08) 58%, transparent 78%);
+/* WORKS BACKGROUND */
+.works .section-bg {
+  background-image:
+    linear-gradient(180deg, rgba(5, 5, 7, .42), rgba(5, 5, 7, .78)),
+    url('/works-bg.jpeg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
-.services .section-field-b {
-  background: radial-gradient(ellipse at 50% 50%, rgba(92,150,255,.62) 0%, rgba(56,90,245,.34) 36%, rgba(26,44,180,.12) 60%, transparent 80%);
+.works .section-field,
+.works .section-liquid {
+  display: none;
 }
 
-.services .section-field-c {
-  background: radial-gradient(ellipse at 50% 50%, rgba(226,55,140,.34) 0%, rgba(192,40,108,.16) 44%, transparent 78%);
+.works .section-soft-mask {
+  background:
+    radial-gradient(ellipse at 50% 52%,
+      rgba(0,0,0,0) 0%,
+      rgba(5,5,7,.18) 48%,
+      rgba(5,5,7,.72) 100%);
 }
 
-.services .section-field-d {
-  background: radial-gradient(ellipse at 50% 50%, rgba(255,231,176,.22) 0%, rgba(248,205,138,.09) 50%, transparent 76%);
+.works .section-vignette {
+  background:
+    linear-gradient(180deg, rgba(5,5,7,.72) 0%, transparent 18%, transparent 78%, rgba(5,5,7,.82) 100%),
+    radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(5,5,7,.48) 72%, #050507 100%);
+}
+
+/* SERVICES BACKGROUND */
+.services .section-bg {
+  background: #ebe9ff;
+}
+
+.services .section-bg::before {
+  content: '';
+  position: absolute;
+  inset: -7%;
+  z-index: 0;
+  background-image: url('/services-bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transform: scale(1.06) translate3d(0, 0, 0);
+  animation: servicesBgDrift 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+.services .section-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(235,233,255,.10) 0%, rgba(235,233,255,.00) 48%, rgba(235,233,255,.08) 100%),
+    radial-gradient(ellipse at 24% 50%, rgba(235,233,255,.44) 0%, rgba(235,233,255,.16) 42%, transparent 72%);
+}
+
+.services .section-field,
+.services .section-liquid,
+.services .section-soft-mask,
+.services .section-vignette {
+  display: none;
 }
 
 .about .section-field-a {
@@ -582,12 +459,7 @@ select {
     radial-gradient(circle at 28% 22%, rgba(255,255,255,.42) 0%, rgba(255,255,255,.13) 14%, transparent 30%),
     radial-gradient(circle at 68% 64%, rgba(92,150,255,.42) 0%, rgba(92,150,255,.16) 34%, transparent 62%),
     radial-gradient(circle at 38% 72%, rgba(232,93,36,.28) 0%, rgba(232,93,36,.10) 38%, transparent 66%),
-    linear-gradient(135deg,
-      rgba(240,248,255,.28) 0%,
-      rgba(168,205,255,.28) 28%,
-      rgba(80,138,255,.24) 54%,
-      rgba(232,93,36,.18) 82%,
-      rgba(255,255,255,.12) 100%);
+    linear-gradient(135deg, rgba(240,248,255,.28) 0%, rgba(168,205,255,.28) 28%, rgba(80,138,255,.24) 54%, rgba(232,93,36,.18) 82%, rgba(255,255,255,.12) 100%);
   filter: blur(10px);
   opacity: .34;
   mix-blend-mode: screen;
@@ -603,12 +475,7 @@ select {
   inset: 0;
   z-index: 8;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 50%,
-    transparent 0%,
-    transparent 44%,
-    rgba(7,7,15,.18) 66%,
-    rgba(7,7,15,.64) 86%,
-    #07070F 100%);
+  background: radial-gradient(ellipse at 50% 50%, transparent 0%, transparent 44%, rgba(7,7,15,.18) 66%, rgba(7,7,15,.64) 86%, #07070F 100%);
 }
 
 .section-vignette {
@@ -623,12 +490,382 @@ select {
 
 .svc-inner,
 .about-inner,
-.contact-inner {
+.contact-inner,
+.works-inner {
   position: relative;
   z-index: 12;
   max-width: 1120px;
   margin: 0 auto;
   width: 100%;
+}
+
+/* WORKS */
+.works-grid {
+  display: grid;
+  grid-template-columns: .88fr 1.12fr;
+  gap: clamp(56px, 7vw, 96px);
+  align-items: center;
+}
+
+.works-copy-block {
+  border-top: 1px solid rgba(255,255,255,.07);
+  padding-top: clamp(26px, 4vh, 38px);
+}
+
+.works-kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 30px;
+}
+
+.works-title {
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: clamp(46px, 5vw, 78px);
+  line-height: .94;
+  letter-spacing: -.07em;
+  color: #fff;
+  margin-bottom: 28px;
+}
+
+.works-title span {
+  display: block;
+}
+
+.works-title-muted {
+  color: rgba(255,255,255,.36);
+}
+
+.works-copy {
+  max-width: 520px;
+  font-size: clamp(15px, 1.18vw, 18px);
+  line-height: 1.5;
+  letter-spacing: -.018em;
+  color: rgba(255,255,255,.58);
+}
+
+.works-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.works-primary,
+.works-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .22s ease, background .22s ease, border-color .22s ease, color .22s ease;
+}
+
+.works-primary {
+  background: rgba(232,93,36,.92);
+  border: 1px solid rgba(232,93,36,.54);
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(232,93,36,.22);
+}
+
+.works-secondary {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.13);
+  color: rgba(255,255,255,.68);
+}
+
+.works-primary:hover,
+.works-secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* BRANDLIFT WORKS MOCKUP */
+.works-mockup {
+  position: relative;
+  height: min(590px, 66vh);
+  min-height: 520px;
+  width: 100%;
+  isolation: isolate;
+  transform: translateX(16px);
+}
+
+.mock-glow {
+  position: absolute;
+  inset: 4% -6% 2% -6%;
+  z-index: 0;
+  border-radius: 42px;
+  background:
+    radial-gradient(ellipse at 62% 24%, rgba(112, 82, 255, .42) 0%, transparent 42%),
+    radial-gradient(ellipse at 24% 78%, rgba(232, 93, 36, .26) 0%, transparent 44%),
+    radial-gradient(ellipse at 74% 78%, rgba(74,130,200,.30) 0%, transparent 42%);
+  filter: blur(38px);
+  opacity: .84;
+}
+
+.mock-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  width: 74%;
+  height: 70px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.48) 0%, rgba(0,0,0,.20) 46%, transparent 74%);
+  filter: blur(24px);
+  z-index: 0;
+}
+
+.bl-feed-card {
+  position: absolute;
+  z-index: 3;
+  left: 10%;
+  top: 9%;
+  width: min(470px, 82%);
+  height: 520px;
+  transform: rotate(-8deg);
+  border-radius: 34px;
+  overflow: hidden;
+  background: rgba(18, 15, 48, .92);
+  border: 1px solid rgba(180,160,255,.24);
+  box-shadow:
+    0 42px 110px rgba(0,0,0,.52),
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 0 80px rgba(102,80,255,.18);
+}
+
+.bl-feed-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(120,92,255,.42) 0%, transparent 38%),
+    radial-gradient(ellipse at 14% 92%, rgba(232,93,36,.28) 0%, transparent 42%),
+    linear-gradient(135deg, #090812 0%, #151340 52%, #080811 100%);
+}
+
+.bl-feed-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.045) 0px, rgba(255,255,255,.045) 1px, transparent 1px, transparent 4px);
+  opacity: .24;
+  mix-blend-mode: screen;
+}
+
+.feed-topbar {
+  position: relative;
+  z-index: 2;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(10,9,26,.58);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.feed-profile {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #fff;
+}
+
+.feed-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: -.05em;
+  color: #fff;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255,255,255,.34), transparent 28%),
+    linear-gradient(135deg, #4A82C8 0%, #E85D24 52%, #ff4f8a 100%);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.10), 0 0 28px rgba(232,93,36,.28);
+}
+
+.feed-profile strong {
+  font-size: 17px;
+  letter-spacing: -.02em;
+}
+
+.feed-menu {
+  color: rgba(255,255,255,.86);
+  font-size: 28px;
+  line-height: 1;
+  transform: translateY(-3px);
+}
+
+.feed-visual {
+  position: relative;
+  z-index: 1;
+  height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 44px;
+}
+
+.feed-visual h3 {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(42px, 4.2vw, 62px);
+  line-height: .94;
+  letter-spacing: -.065em;
+  text-align: center;
+  color: rgba(255,255,255,.94);
+  text-shadow: 0 0 42px rgba(126,82,255,.34);
+}
+
+.feed-visual h3 span {
+  display: block;
+  color: rgba(136,110,255,.88);
+}
+
+.feed-orbit {
+  position: absolute;
+  inset: 42px;
+  border-radius: 34px;
+  background:
+    radial-gradient(ellipse at 78% 20%, rgba(126,82,255,.42), transparent 45%),
+    radial-gradient(ellipse at 18% 85%, rgba(232,93,36,.30), transparent 45%),
+    rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.feed-flare {
+  position: absolute;
+  width: 90px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.92), transparent);
+  box-shadow: 0 0 22px rgba(126,82,255,.9), 0 0 42px rgba(126,82,255,.46);
+  transform: rotate(-18deg);
+}
+
+.feed-flare-1 {
+  left: -16px;
+  top: 148px;
+}
+
+.feed-flare-2 {
+  right: -16px;
+  bottom: 120px;
+}
+
+.feed-actions {
+  position: relative;
+  z-index: 3;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  color: rgba(255,255,255,.88);
+  background: rgba(255,255,255,.055);
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.feed-actions-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 36px;
+}
+
+.feed-heart {
+  color: #E85D24;
+  text-shadow: 0 0 24px rgba(232,93,36,.55);
+}
+
+.feed-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.feed-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.42);
+}
+
+.feed-dots span:first-child {
+  background: rgba(126,82,255,.95);
+}
+
+.feed-save {
+  font-size: 38px;
+}
+
+.side-card {
+  position: absolute;
+  z-index: 2;
+  width: 250px;
+  height: 270px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(20,18,45,.72);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 32px 80px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
+  opacity: .72;
+}
+
+.side-card-left {
+  left: -2%;
+  top: 26%;
+  transform: rotate(-13deg);
+}
+
+.side-card-right {
+  right: 0;
+  bottom: 12%;
+  transform: rotate(13deg);
+}
+
+.side-card-inner {
+  position: absolute;
+  inset: 0;
+  padding: 28px;
+  background:
+    radial-gradient(ellipse at 72% 18%, rgba(126,82,255,.28), transparent 46%),
+    radial-gradient(ellipse at 14% 86%, rgba(232,93,36,.22), transparent 50%),
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+}
+
+.side-card-inner h4 {
+  font-size: 28px;
+  line-height: .95;
+  letter-spacing: -.06em;
+  color: rgba(255,255,255,.80);
+}
+
+.side-card-ui {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255,255,255,.62);
+  font-size: 23px;
 }
 
 /* SERVICES */
@@ -697,9 +934,7 @@ select {
   border-bottom: 1px solid rgba(255,255,255,.05);
   opacity: 0;
   transform: translateY(18px);
-  transition:
-    opacity .7s cubic-bezier(.16,1,.3,1),
-    transform .7s cubic-bezier(.16,1,.3,1);
+  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
 }
 
 .svc-row.visible {
@@ -749,6 +984,39 @@ select {
   line-height: 1.52;
   color: rgba(255,255,255,.34);
   max-width: 390px;
+}
+
+/* SERVICES LIGHT TEXT */
+.services .svc-head {
+  border-bottom-color: rgba(7,7,15,.10);
+}
+
+.services .svc-statement {
+  color: rgba(7,7,15,.92);
+}
+
+.services .svc-statement em {
+  color: rgba(7,7,15,.42);
+}
+
+.services .svc-tag-index {
+  color: rgba(7,7,15,.30);
+}
+
+.services .svc-row {
+  border-bottom-color: rgba(7,7,15,.08);
+}
+
+.services .svc-num {
+  color: rgba(7,7,15,.26);
+}
+
+.services .svc-title {
+  color: rgba(7,7,15,.86);
+}
+
+.services .svc-body {
+  color: rgba(7,7,15,.48);
 }
 
 /* ABOUT */
@@ -886,7 +1154,7 @@ select {
   color: rgba(255,255,255,.88);
 }
 
-/* CONTACT SECTION */
+/* CONTACT */
 .contact-grid {
   display: grid;
   grid-template-columns: .95fr 1.05fr;
@@ -975,7 +1243,7 @@ select {
   transform: translateY(-2px);
 }
 
-/* CUSTOM MAP */
+/* MAP */
 .contact-map-card {
   position: relative;
   min-height: clamp(420px, 52vh, 560px);
@@ -1642,55 +1910,45 @@ select {
 }
 
 /* ANIMATION */
-@keyframes floatOrange {
-  0%, 100% { transform: translate(-48%, -47%) scale(1); opacity: .95; }
-  35% { transform: translate(-44%, -52%) scale(1.08); opacity: 1; }
-  70% { transform: translate(-54%, -43%) scale(.94); opacity: .82; }
+@keyframes heroImageDrift {
+  0% { transform: scale(1.08) translate3d(0, 0, 0); }
+  25% { transform: scale(1.12) translate3d(-3.5%, 2.5%, 0); }
+  50% { transform: scale(1.10) translate3d(3.5%, -2.5%, 0); }
+  75% { transform: scale(1.13) translate3d(-2.5%, -3%, 0); }
+  100% { transform: scale(1.08) translate3d(0, 0, 0); }
 }
 
-@keyframes floatBlue {
-  0%, 100% { transform: translate(-60%, -44%) scale(1); opacity: .88; }
-  45% { transform: translate(-64%, -48%) scale(1.10); opacity: 1; }
-  74% { transform: translate(-54%, -40%) scale(.92); opacity: .76; }
+@keyframes servicesBgDrift {
+  0% { transform: scale(1.06) translate3d(0, 0, 0); }
+  25% { transform: scale(1.095) translate3d(-1.8%, 1.2%, 0); }
+  50% { transform: scale(1.08) translate3d(1.6%, -1.5%, 0); }
+  75% { transform: scale(1.105) translate3d(-1.2%, -1.1%, 0); }
+  100% { transform: scale(1.06) translate3d(0, 0, 0); }
 }
 
-@keyframes floatPink {
-  0%, 100% { transform: translate(-20%, -53%) scale(1); opacity: .78; }
-  50% { transform: translate(-12%, -58%) scale(1.16); opacity: .95; }
-}
-
-@keyframes floatCream {
-  0%, 100% { transform: translate(-35%, -58%) scale(1); opacity: .72; }
-  50% { transform: translate(-30%, -62%) scale(1.18); opacity: .95; }
-}
-
-@keyframes glassDrift {
-  0%, 100% { transform: translate3d(-1.5%, 1%, 0) scale(1.02); opacity: .42; }
-  45% { transform: translate3d(2%, -1.5%, 0) scale(1.06); opacity: .58; }
-  72% { transform: translate3d(0%, 2%, 0) scale(.99); opacity: .50; }
-}
-
-@keyframes glassPulse {
-  0%, 100% { transform: translate3d(-2%, 0, 0) scale(1); opacity: .68; }
-  50% { transform: translate3d(3%, -2%, 0) scale(1.08); opacity: .96; }
-}
-
-@keyframes liquidFlow {
-  0%, 100% {
-    transform: translate(-52%, -50%) rotate(-5deg) scale(1);
-    border-radius: 58% 42% 54% 46% / 46% 58% 42% 54%;
+@keyframes wordInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-42px, 20px, 0) scale(.985);
+    filter: blur(10px);
   }
-  25% {
-    transform: translate(-45%, -57%) rotate(8deg) scale(1.10);
-    border-radius: 40% 60% 46% 54% / 62% 42% 58% 38%;
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
   }
-  50% {
-    transform: translate(-58%, -44%) rotate(-10deg) scale(.94);
-    border-radius: 54% 46% 66% 34% / 38% 66% 34% 62%;
+}
+
+@keyframes wordInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(58px, 24px, 0) scale(.985);
+    filter: blur(10px);
   }
-  75% {
-    transform: translate(-47%, -51%) rotate(6deg) scale(1.08);
-    border-radius: 66% 34% 44% 56% / 54% 36% 64% 46%;
+  to {
+    opacity: 1;
+    transform: translate3d(18px, 0, 0) scale(1);
+    filter: blur(0);
   }
 }
 
@@ -1735,11 +1993,6 @@ select {
   }
 }
 
-@keyframes heroCopyIn {
-  from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
-}
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1766,13 +2019,26 @@ select {
 }
 
 /* RESPONSIVE */
+@media (max-width: 1100px) {
+  .works-grid {
+    grid-template-columns: .9fr 1fr;
+    gap: 48px;
+  }
+
+  .works-mockup {
+    transform: translateX(8px) scale(.92);
+    transform-origin: center right;
+  }
+}
+
 @media (max-width: 900px) {
   .site-nav {
     padding: 22px 22px 0;
     align-items: flex-start;
   }
 
-  .logo-img {
+  .logo-img-dark,
+  .logo-img-light {
     width: 150px;
   }
 
@@ -1786,11 +2052,19 @@ select {
     font-size: 11px;
   }
 
+  .works-grid,
   .svc-head,
   .about-grid,
   .contact-grid {
     grid-template-columns: 1fr;
-    gap: 34px;
+    gap: 42px;
+  }
+
+  .works-mockup {
+    max-width: 620px;
+    margin: 0 auto;
+    transform: scale(.88);
+    transform-origin: center center;
   }
 
   .svc-tag {
@@ -1839,7 +2113,8 @@ select {
     padding: 18px 18px 0;
   }
 
-  .logo-img {
+  .logo-img-dark,
+  .logo-img-light {
     width: 142px;
   }
 
@@ -1880,6 +2155,25 @@ select {
 
   .hl span:nth-child(2) {
     transform: none;
+  }
+
+  @keyframes wordInRight {
+    from {
+      opacity: 0;
+      transform: translate3d(42px, 24px, 0) scale(.985);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  .works-mockup {
+    height: 570px;
+    min-height: 570px;
+    transform: scale(.78);
   }
 
   .showreel-btn {
@@ -1946,6 +2240,19 @@ select {
     align-items: flex-start;
   }
 
+  .works-title,
+  .about-title,
+  .contact-title {
+    font-size: clamp(38px, 12vw, 58px);
+  }
+
+  .works-mockup {
+    height: 500px;
+    min-height: 500px;
+    transform: scale(.64);
+    transform-origin: center top;
+  }
+
   .services {
     padding-top: 126px;
   }
@@ -1968,11 +2275,6 @@ select {
   .svc-body {
     padding-top: 0;
     grid-column: auto;
-  }
-
-  .about-title,
-  .contact-title {
-    font-size: clamp(38px, 12vw, 58px);
   }
 
   .about-services {
@@ -2021,6 +2323,12 @@ select {
     font-size: 8px;
   }
 
+  .works-mockup {
+    transform: scale(.54);
+    height: 430px;
+    min-height: 430px;
+  }
+
   .showreel-btn {
     width: 74px;
     height: 74px;
@@ -2028,21 +2336,21 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rf-orange,
-  .rf-blue,
-  .rf-pink,
-  .rf-cream,
-  .rf-glass,
-  .rf-glass::after,
-  .rf-liquid,
+  .stage::before,
+  .services .section-bg::before,
   .section-field,
   .section-liquid,
   .showreel-svg,
   .hero-copy,
   .logo,
   .nav-right,
-  .showreel-btn {
+  .showreel-btn,
+  .hl span,
+  .sub,
+  .btn-start {
     animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
 }
 `
@@ -2088,10 +2396,7 @@ function ReelModal({ onClose }: { onClose: () => void }) {
       aria-modal="true"
       aria-label="BrandLift showreel"
     >
-      <div
-        className="modal-box video-modal-box"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="modal-box video-modal-box" onClick={(e) => e.stopPropagation()}>
         <video
           ref={videoRef}
           className="reel-video"
@@ -2108,12 +2413,7 @@ function ReelModal({ onClose }: { onClose: () => void }) {
           <span>2025</span>
         </div>
 
-        <button
-          type="button"
-          className="modal-close"
-          onClick={onClose}
-          aria-label="Close reel"
-        >
+        <button type="button" className="modal-close" onClick={onClose} aria-label="Close reel">
           ✕
         </button>
       </div>
@@ -2139,22 +2439,11 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div
-      className="cm-scrim"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Start a project"
-    >
+    <div className="cm-scrim" onClick={onClose} role="dialog" aria-modal="true" aria-label="Start a project">
       <div className="cm-panel" onClick={(e) => e.stopPropagation()}>
         <div className="cm-grain" aria-hidden="true" />
 
-        <button
-          type="button"
-          className="cm-close"
-          onClick={onClose}
-          aria-label="Close"
-        >
+        <button type="button" className="cm-close" onClick={onClose} aria-label="Close">
           ✕
         </button>
 
@@ -2247,6 +2536,112 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   )
 }
 
+function WorksSection() {
+  return (
+    <section id="works" className="abstract-section works">
+      <SectionBackground />
+
+      <div className="works-inner">
+        <div className="works-grid">
+          <div className="works-copy-block">
+            <span className="works-kicker">Works</span>
+
+            <h2 className="works-title">
+              <span>Ideas built for feeds,</span>
+              <span className="works-title-muted">not folders.</span>
+            </h2>
+
+            <p className="works-copy">
+              Selected work, campaign thinking and social-first brand moments.
+            </p>
+
+            <div className="works-actions">
+              <a className="works-primary" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+                View on Instagram →
+              </a>
+
+              <a className="works-secondary" href="#services">
+                Explore services
+              </a>
+            </div>
+          </div>
+
+          <div className="works-mockup" aria-label="BrandLift Instagram work preview">
+            <div className="mock-glow" />
+            <div className="mock-shadow" />
+
+            <div className="side-card side-card-left">
+              <div className="side-card-inner">
+                <h4>
+                  Brand
+                  <br /> systems
+                </h4>
+              </div>
+              <div className="side-card-ui">
+                <span>♡</span>
+                <span>⌕</span>
+                <span>↗</span>
+                <span>□</span>
+              </div>
+            </div>
+
+            <div className="bl-feed-card">
+              <div className="feed-topbar">
+                <div className="feed-profile">
+                  <div className="feed-avatar">BL</div>
+                  <strong>BrandLift - Social system</strong>
+                </div>
+                <div className="feed-menu">⋮</div>
+              </div>
+
+              <div className="feed-visual">
+                <div className="feed-orbit" />
+                <div className="feed-flare feed-flare-1" />
+                <div className="feed-flare feed-flare-2" />
+                <h3>
+                  <span>Culture</span>
+                  moves when
+                  <br /> ideas do.
+                </h3>
+              </div>
+
+              <div className="feed-actions">
+                <div className="feed-actions-left">
+                  <span className="feed-heart">♥</span>
+                  <span>♡</span>
+                  <span>↗</span>
+                </div>
+                <div className="feed-dots">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div className="feed-save">□</div>
+              </div>
+            </div>
+
+            <div className="side-card side-card-right">
+              <div className="side-card-inner">
+                <h4>
+                  Feed-first
+                  <br /> campaigns
+                </h4>
+              </div>
+              <div className="side-card-ui">
+                <span>♡</span>
+                <span>⌕</span>
+                <span>↗</span>
+                <span>□</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function ServicesSection() {
   const rowRefs = useRef<Array<HTMLDivElement | null>>([])
 
@@ -2275,26 +2670,10 @@ function ServicesSection() {
   }, [])
 
   const rows = [
-    {
-      num: '01',
-      title: 'We See What Others Miss.',
-      body: 'We find the invisible truth in the space everyone is already looking at.',
-    },
-    {
-      num: '02',
-      title: 'We Build Systems, Not Campaigns.',
-      body: 'Not short-term ads, but structures designed to grow with the brand.',
-    },
-    {
-      num: '03',
-      title: 'We Shape Perception, Not Media Plans.',
-      body: 'We don’t just spend budgets. We make brands impossible to ignore.',
-    },
-    {
-      num: '04',
-      title: 'We Evolve Brands Through Data.',
-      body: 'We don’t report numbers. We turn data into real-time brand evolution.',
-    },
+    { num: '01', title: 'We See What Others Miss.', body: 'We find the invisible truth in the space everyone is already looking at.' },
+    { num: '02', title: 'We Build Systems, Not Campaigns.', body: 'Not short-term ads, but structures designed to grow with the brand.' },
+    { num: '03', title: 'We Shape Perception, Not Media Plans.', body: 'We don’t just spend budgets. We make brands impossible to ignore.' },
+    { num: '04', title: 'We Evolve Brands Through Data.', body: 'We don’t report numbers. We turn data into real-time brand evolution.' },
   ]
 
   return (
@@ -2371,18 +2750,10 @@ function AboutSection() {
         </div>
 
         <div className="about-services" aria-label="Capabilities">
-          <div className="about-service">
-            <span>Creative</span>
-          </div>
-          <div className="about-service">
-            <span>Studio</span>
-          </div>
-          <div className="about-service">
-            <span>Production</span>
-          </div>
-          <div className="about-service">
-            <span>Influencer Marketing</span>
-          </div>
+          <div className="about-service"><span>Creative</span></div>
+          <div className="about-service"><span>Studio</span></div>
+          <div className="about-service"><span>Production</span></div>
+          <div className="about-service"><span>Influencer Marketing</span></div>
         </div>
       </div>
     </section>
@@ -2415,12 +2786,7 @@ function ContactSection({ onStartProject }: { onStartProject: () => void }) {
                 Start a project →
               </button>
 
-              <a
-                className="contact-secondary"
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a className="contact-secondary" href={mapsUrl} target="_blank" rel="noopener noreferrer">
                 Open map
               </a>
             </div>
@@ -2447,29 +2813,23 @@ function ContactSection({ onStartProject }: { onStartProject: () => void }) {
 
                 <path className="map-road map-road-main" d="M-40 340 C120 310 210 318 330 292 C470 260 575 250 940 218" />
                 <path className="map-road map-road-main" d="M-40 420 C150 388 275 372 410 350 C555 326 690 318 940 286" />
-
                 <path className="map-road" d="M170 -20 C200 90 216 170 246 265 C274 354 308 438 350 600" />
                 <path className="map-road" d="M520 -30 C492 92 488 176 520 272 C548 356 610 428 680 600" />
                 <path className="map-road" d="M740 -30 C706 78 708 184 760 292 C802 380 844 468 872 600" />
-
                 <path className="map-road thin" d="M42 128 C178 138 306 128 430 104 C540 82 638 78 860 96" />
                 <path className="map-road thin" d="M68 220 C210 214 354 208 478 178 C596 150 710 158 890 172" />
                 <path className="map-road thin" d="M110 512 C236 468 342 440 468 430 C596 418 704 432 884 402" />
-
                 <circle className="map-node" cx="246" cy="265" r="6" />
                 <circle className="map-node" cx="520" cy="272" r="6" />
                 <circle className="map-node" cx="760" cy="292" r="6" />
                 <circle className="map-node" cx="410" cy="350" r="5" />
                 <circle className="map-node" cx="680" cy="600" r="5" />
-
                 <g className="map-pin" filter="url(#softGlow)">
                   <circle cx="525" cy="314" r="42" />
                   <circle cx="525" cy="314" r="16" />
                 </g>
-
                 <text className="map-label main" x="578" y="306">GROUP DP</text>
                 <text className="map-label sub" x="578" y="330">MASLAK / ISTANBUL</text>
-
                 <text className="map-label road" x="452" y="395" transform="rotate(-8 452 395)">ESKI BUYUKDERE CAD.</text>
                 <text className="map-label road muted" x="630" y="188" transform="rotate(66 630 188)">BUYUKDERE CAD.</text>
               </svg>
@@ -2499,47 +2859,19 @@ function ContactSection({ onStartProject }: { onStartProject: () => void }) {
   )
 }
 
-function ShowreelButton({
-  onClick,
-  floating = false,
-}: {
-  onClick: () => void
-  floating?: boolean
-}) {
+function ShowreelButton({ onClick, floating = false }: { onClick: () => void; floating?: boolean }) {
   const pathId = floating ? 'sr-path-floating' : 'sr-path'
 
   return (
-    <button
-      className={`showreel-btn${floating ? ' floating-showreel' : ''}`}
-      onClick={onClick}
-      aria-label="Play BrandLift showreel"
-      type="button"
-    >
+    <button className={`showreel-btn${floating ? ' floating-showreel' : ''}`} onClick={onClick} aria-label="Play BrandLift showreel" type="button">
       <svg viewBox="0 0 92 92" className="showreel-svg" aria-hidden="true">
         <defs>
-          <path
-            id={pathId}
-            d="M46,46 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"
-          />
+          <path id={pathId} d="M46,46 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
         </defs>
 
-        <circle
-          cx="46"
-          cy="46"
-          r="44"
-          fill="none"
-          stroke="rgba(255,255,255,.18)"
-          strokeWidth="0.8"
-        />
+        <circle cx="46" cy="46" r="44" fill="none" stroke="rgba(255,255,255,.18)" strokeWidth="0.8" />
 
-        <text
-          fill="rgba(255,255,255,.76)"
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '7.5px',
-            letterSpacing: '.15em',
-          }}
-        >
+        <text fill="rgba(255,255,255,.76)" style={{ fontFamily: 'var(--font-mono)', fontSize: '7.5px', letterSpacing: '.15em' }}>
           <textPath href={`#${pathId}`} startOffset="0%">
             PLAY SHOWREEL · PLAY SHOWREEL ·
           </textPath>
@@ -2560,35 +2892,23 @@ function SiteNav({ onContact }: { onContact: () => void }) {
         <img
           src="/brandlift-logo.png"
           alt="BrandLift by Group DP"
-          className="logo-img"
+          className="logo-img-dark"
+        />
+
+        <img
+          src="/brandlift-logo-white.png"
+          alt="BrandLift by Group DP"
+          className="logo-img-light"
         />
       </a>
 
       <div className="nav-right">
         <ul className="nav-links">
-          <li>
-            <a
-              href="https://www.instagram.com/brandlift.groupdp/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Works
-            </a>
-          </li>
-          <li>
-            <a href="#services">Services</a>
-          </li>
-          <li>
-            <a href="#about">About</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
-          <li>
-            <button type="button" onClick={onContact}>
-              Start
-            </button>
-          </li>
+          <li><a href="#works">Works</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><button type="button" onClick={onContact}>Start</button></li>
         </ul>
       </div>
     </nav>
@@ -2599,6 +2919,58 @@ export default function BrandLiftHero() {
   const [reel, setReel] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
 
+  useEffect(() => {
+    const updateLogoMode = () => {
+      const works = document.getElementById('works')
+      const services = document.getElementById('services')
+      const about = document.getElementById('about')
+      const contact = document.getElementById('contact')
+  
+      const y = window.scrollY + window.innerHeight * 0.22
+  
+      const worksTop = works?.offsetTop ?? 0
+      const servicesTop = services?.offsetTop ?? 0
+      const aboutTop = about?.offsetTop ?? 0
+      const contactTop = contact?.offsetTop ?? 0
+  
+      const isWorks =
+        y >= worksTop &&
+        y < servicesTop
+  
+      const isServices =
+        y >= servicesTop &&
+        y < aboutTop
+  
+      const isAbout =
+        y >= aboutTop &&
+        y < contactTop
+  
+      const isContact =
+        y >= contactTop
+  
+      if (isWorks || isAbout || isContact) {
+        document.body.classList.add('logo-light')
+      } else if (isServices) {
+        document.body.classList.remove('logo-light')
+      } else {
+        document.body.classList.remove('logo-light')
+      }
+    }
+  
+    updateLogoMode()
+  
+    window.addEventListener('scroll', updateLogoMode, { passive: true })
+    window.addEventListener('resize', updateLogoMode)
+    window.addEventListener('hashchange', updateLogoMode)
+  
+    return () => {
+      window.removeEventListener('scroll', updateLogoMode)
+      window.removeEventListener('resize', updateLogoMode)
+      window.removeEventListener('hashchange', updateLogoMode)
+      document.body.classList.remove('logo-light')
+    }
+  }, [])
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
@@ -2608,18 +2980,7 @@ export default function BrandLiftHero() {
       <div className="page">
         <main id="top" className="shell">
           <section className="stage">
-            <div className="reel-field" aria-hidden="true">
-              <div className="rf-blue" />
-              <div className="rf-orange" />
-              <div className="rf-pink" />
-              <div className="rf-cream" />
-              <div className="rf-band" />
-              <div className="rf-glass" />
-              <div className="rf-liquid" />
-              <div className="rf-glass-mask" />
-              <div className="rf-grain" />
-              <div className="rf-vignette" />
-            </div>
+            <div className="reel-field" aria-hidden="true" />
 
             <div className="hero-copy">
               <h1 className="hl">
@@ -2629,17 +2990,14 @@ export default function BrandLiftHero() {
 
               <p className="sub">Full-service creative agency</p>
 
-              <button
-                type="button"
-                className="btn-start"
-                onClick={() => setContactOpen(true)}
-              >
+              <button type="button" className="btn-start" onClick={() => setContactOpen(true)}>
                 Start a project →
               </button>
             </div>
           </section>
         </main>
 
+        <WorksSection />
         <ServicesSection />
         <AboutSection />
         <ContactSection onStartProject={() => setContactOpen(true)} />
@@ -2647,12 +3005,7 @@ export default function BrandLiftHero() {
 
       <ShowreelButton onClick={() => setReel(true)} floating />
 
-      <button
-        type="button"
-        className="back-top-btn"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        aria-label="Back to top"
-      >
+      <button type="button" className="back-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
         ↑
       </button>
 
